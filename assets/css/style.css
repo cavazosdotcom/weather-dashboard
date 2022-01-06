@@ -1,3 +1,19 @@
+h1 {
+    color: #fff;
+}
+
+li {
+    color: #fff;
+}
+
+span {
+    color: green;
+}
+
 .box {
     background-color: lightslategray;
+}
+
+.border-bottom {
+    border-bottom: solid black;
 }

@@ -13,43 +13,7 @@
 
 </head>
 <body>
-    <!-- <section class="hero is-small is-primary"> 
-      <div class="hero-body has-text-centered">
-        <p class="title">
-          Weather Dashboard
-        </p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
-        Search Form elements
-        <form id="search-input">
-          <div class="field">
-            <label class="label">Search for a City:</label>
-            <div class="control">
-              <input id="search-value" class="input" type="text" placeholder="Seattle" />
-            </div>
-          </div>
-
-      
-          
-          Search Button
-          <div class="field is-grouped">
-              <p class="control">
-                <a class="button is-primary">
-                  Submit
-                </a>
-              </p>
-              <p class="control">
-                <a class="button is-light">
-                  Cancel
-                </a>
-              </p>
-            </div>
-        </form>
-      </div>
-    </section> -->
+    
     <section class="hero is-small is-primary"> 
       <div class="hero-body has-text-centered">
         <p class="title">
@@ -60,32 +24,20 @@
   
   <div class="columns m-2">
     <div class="column is-one-third-tablet is-one-quarter-desktop is-full-mobile">
-  
-      <section class="">
-        <div class="container">
-          <!-- Search Form elements -->
-          <form id="search-input">
-            <div class="field">
-              <label class="label">Search for a City:</label>
-              <div class="control">
-                <input id="search-value" class="input" type="text" placeholder="Seattle" />
-              </div>
-            </div>
-            <!-- Search Button -->
-            <div class="field is-grouped">
-                <p class="control">
-                  <a class="button is-primary">
-                    Submit
-                  </a>
-                </p>
-                <p class="control">
-                  <a class="button is-light">
-                    Cancel
-                  </a>
-                </p>
-              </div>
-          </form>
+        <form class="border-bottom" id="search-input">
+            <label class="label">Search for a City:</label>
+            <input id="search-value" class="input" type="text" placeholder="Seattle" />
+            <button class="button is-primary is-fullwidth my-2">Search</button>
+        </form>
+        
+        <div>
+          <button class="button is-dark is-fullwidth my-2" data-city="San Diego">San Diego</button>
+          <button class="button is-dark is-fullwidth my-2" data-city="San Diego">Seattle</button>
+          <button class="button is-dark is-fullwidth my-2" data-city="San Diego">Everett</button>
+          <button class="button is-dark is-fullwidth my-2" data-city="San Diego">Bellingham</button>
+          <button class="button is-dark is-fullwidth my-2" data-city="San Diego">Spokane</button>
         </div>
+
     </div>
     
     <div class="column is-two-thirds-tablet is-three-quarters-desktop is-full-mobile m-2">
@@ -93,62 +45,68 @@
       <div class="box">
         <h1>Seattle (1/01/2021)</h1>
         <ul>
+          <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
           <li>Temp: 74.01F</li>
           <li>Wind: 6.67 MPH</li>
           <li>Humidity: 46%</li>
-          <li>UV index:<p>6.47</p></li>
+          <li>UV index: <span>6.47</span></li>
         </ul>
       </div>
       
-      <h1 class="py-4">5-Day Forecast:</h1>
+      <h1 class="py-">5-Day Forecast:</h1>
       <div class="columns is-desktop m-2"> 
         <div class="box m-2 column has-text-centered">
           <h1>(1/02/2021)</h1>
           <ul>
+            <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
             <li>Temp: 74.01F</li>
             <li>Wind: 6.67 MPH</li>
             <li>Humidity: 46%</li>
-            <li>UV index:<p>6.47</p></li>
+            <li>UV index: <span>6.47</span></li>
           </ul>
         </div>
         
         <div class="box m-2 column has-text-centered">
           <h1>(1/03/2021)</h1>
           <ul>
+            <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
             <li>Temp: 74.01F</li>
             <li>Wind: 6.67 MPH</li>
             <li>Humidity: 46%</li>
-            <li>UV index:<p>6.47</p></li>
+            <li>UV index: <span>6.47</span></li>
           </ul>
         </div>
 
         <div class="box m-2 column has-text-centered">
           <h1>(1/04/2021)</h1>
           <ul>
+            <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
             <li>Temp: 74.01F</li>
             <li>Wind: 6.67 MPH</li>
             <li>Humidity: 46%</li>
-            <li>UV index:<p>6.47</p></li>
+            <li>UV index: <span>6.47</span></li>
           </ul>
         </div>
 
         <div class="box m-2 column has-text-centered">
           <h1>(1/05/2021)</h1>
           <ul>
+            <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
             <li>Temp: 74.01F</li>
             <li>Wind: 6.67 MPH</li>
             <li>Humidity: 46%</li>
-            <li>UV index:<p>6.47</p></li>
+            <li>UV index: <span>6.47</span></li>
           </ul>
         </div>
 
         <div class="box m-2 column has-text-centered">
           <h1>(1/06/2021)</h1>
           <ul>
+            <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
             <li>Temp: 74.01F</li>
             <li>Wind: 6.67 MPH</li>
             <li>Humidity: 46%</li>
-            <li>UV index:<p>6.47</p></li>
+            <li>UV index: <span>6.47</span></li>
           </ul>
         </div>
       </div>
