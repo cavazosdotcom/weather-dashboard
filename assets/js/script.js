@@ -15,7 +15,9 @@ searchFormEl.on('submit', function(event){
 
     searchInputEl.val('');
 });
-// console.log(city);
+
+
+
 function getGeo( searchVal ) {
 
     // API Request URL.
@@ -30,14 +32,15 @@ function getGeo( searchVal ) {
         .then( function( data ) {
             // console.log(data);
             console.log(data[0].lat);
-            // var latitude = data[0].lat;
+            var latitude = data[0].lat;
             console.log(data[0].lon);
-            // var longitude = data[0].lon;
+            var longitude = data[0].lon;
             console.log(data[0].name)
             // var name = data[0].name
             console.log(data[0].state)
             // var state = data[0].state
             
+            getWeather( latitude, longitude );
 
         });
         } else {
@@ -48,5 +51,32 @@ function getGeo( searchVal ) {
             renderModal( Error, "is-warning" );
         });
 };
+
+
+
+function getWeather( latitude, longitude ) {
+
+    // API Request URL.
+    var requestUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+   
+    // Fetch Request.
+    fetch( requestUrl )
+        .then(function( response ) {
+        if ( response.ok ) {
+            return response.json()
+        
+        .then( function( data ) {
+            console.log(data);
+            
+        });
+        } else {
+            throw Error( response.statusText + ". We were not able to locate the city you searched for." );
+        }
+        })
+        .catch( function( Error ) {
+            renderModal( Error, "is-warning" );
+        });
+};
+
 
 // searchFormEl.on( 'submit' , formSubmit );
