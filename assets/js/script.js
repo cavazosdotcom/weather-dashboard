@@ -1,7 +1,8 @@
 var searchInputEl = $( '#search-value' );
 var searchFormEl = $('#search-input');
 var city = ''
-// var apiKey = 'f30afd0d9c78b669a42b1299a1eee959'
+var forecastEl = $('#forecast')
+var cityName = ''
 var apiKey = 'a646f924a03b0b80578a8704a8cb2ed5'
 
 
@@ -35,6 +36,7 @@ function getGeo( searchVal ) {
             console.log(data[0].lon);
             var longitude = data[0].lon;
             console.log(data[0].name)
+            cityName = `${data[0].name}, ${data[0].state}`
             // var name = data[0].name
             console.log(data[0].state)
             // var state = data[0].state
@@ -65,13 +67,15 @@ function getWeather( latitude, longitude ) {
             return response.json()
         
         .then( function( data ) {
-            // console.log(data);
+            console.log(data);
             // console.log(data.current.temp)
             // console.log(data.current.wind_speed)
             // console.log(data.current.humidity)
             // console.log(data.current.uvi)
-            renderCurrent();
-            renderForecast();
+            forecastEl.html('');
+            console.log(cityName)
+            renderCurrent(data, cityName);
+            renderForecast(data);
             
         });
         } else {
@@ -84,27 +88,33 @@ function getWeather( latitude, longitude ) {
         });
 };
 
-function renderCurrent( ) {
-    var htmlTemplateCurrent = `
+function renderCurrent( data, cityName ) {
+
+    var weatherData = data
+
+    var htmlTemplateCurrent = ''
+    htmlTemplateCurrent = `
     <div class="box">
-        <h1>Everett (1/01/2021)</h1>
+        <h1>${cityName} (1/01/2021)</h1>
         <ul>
           <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
-          <li>Temp: 74.01F</li>
-          <li>Wind: 6.67 MPH</li>
-          <li>Humidity: 46%</li>
-          <li>UV index: <span>6.47</span></li>
+          <li>Temp: ${weatherData.current.temp}</li>
+          <li>Wind: ${weatherData.current.wind_speed} MPH</li>
+          <li>Humidity: ${weatherData.current.humidity}%</li>
+          <li>UV index: <span>${weatherData.current.uvi}</span></li>
         </ul>
     </div>
     `;
 
-    $('#forecast').append(htmlTemplateCurrent);
+    forecastEl.append(htmlTemplateCurrent);
 };
 
 
 function renderForecast( ) {
+    
+    // var weatherData = data
     var htmlTemplate = ''
-    for (var i=1; i < 6; i++){
+    for (var i=0; i < 5; i++){
         console.log(i)
         htmlTemplate += `
         <div class="box m-2 column has-text-centered">
@@ -129,8 +139,7 @@ function renderForecast( ) {
         </div>   
         `;
     
-    $('#forecast').append(htmlContainer);
-    // $('#forecast').html(htmlTemplate);
+    forecastEl.append(htmlContainer);
 };
 
 
