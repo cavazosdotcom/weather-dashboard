@@ -17,3 +17,7 @@ span {
 .border-bottom {
     border-bottom: solid black;
 }
+
+.black {
+    color: black;
+}
