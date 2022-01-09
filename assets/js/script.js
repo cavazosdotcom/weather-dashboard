@@ -110,9 +110,9 @@ function renderCurrent( data, cityName ) {
 };
 
 
-function renderForecast( ) {
+function renderForecast( data ) {
     
-    // var weatherData = data
+    var weatherData = data
     var htmlTemplate = ''
     for (var i=0; i < 5; i++){
         console.log(i)
@@ -121,7 +121,8 @@ function renderForecast( ) {
             <h1>(1/0${i}/2021)</h1>
             <ul>
                 <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
-                <li>Temp: 42.01F</li>
+                <li>Low Temp: ${Math.round(weatherData.daily[i].temp.min)}℉</li>
+                <li>High Temp: ${Math.round(weatherData.daily[i].temp.max)}℉</li>
                 <li>Wind: 9.0 MPH</li>
                 <li>Humidity: 50%</li>
                 <li>UV index: <span>1.09</span></li>
