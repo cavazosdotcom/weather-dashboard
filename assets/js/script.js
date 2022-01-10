@@ -94,17 +94,18 @@ function renderCurrent( data, cityName ) {
     var currentIcon = weatherData.current.weather[0].icon
     var htmlTemplateCurrent = ''
 
-    
+    // console.log(moment(weatherData.current.dt, "X").format("M/D/YYYY"))
 
     htmlTemplateCurrent = `
     <div class="box has-text-centered">
-        <h1 class="small-margin-bottom">${cityName}</h1> 
-        <h1 class="margin-bottom">(1/01/2021)</h1>
+        <h1 class="small-margin-bottom large-text">${cityName}</h1> 
+        <h1 class="small-margin-bottom medium-text">${moment(weatherData.current.dt, "X").format("dddd")}</h1>
+        <h1 class="margin-bottom medium-text">${moment(weatherData.current.dt, "X").format("MMM Do, YYYY")}</h1>
         <ul>
             <li>${weatherData.current.weather[0].main}</li>
             <img src="http://openweathermap.org/img/wn/${currentIcon}@2x.png" alt="broken clouds" style="width:100px">
             <br>
-            <li>Temp: ${weatherData.current.temp}℉</li>
+            <li>Temp: ${Math.round(weatherData.current.temp)}℉</li>
             <br>
             <li>${Math.round(weatherData.daily[0].temp.min)}℉  -  ${Math.round(weatherData.daily[0].temp.max)}℉</li>
             <br>
@@ -131,12 +132,12 @@ function renderForecast( data ) {
         var dailyIcon = weatherData.daily[i].weather[0].icon
         htmlTemplate += `
         <div class="box m-2 column has-text-centered">
-            <h1 class="margin-bottom">(1/0${i}/2021)</h1>
+            <h1 class="margin-bottom">${moment(weatherData.daily[i].dt, "X").format("dddd")}</h1>
             <ul>
                 <li>${weatherData.daily[i].weather[0].main}</li>
                 <img src="http://openweathermap.org/img/wn/${dailyIcon}@2x.png" alt="broken clouds" style="width:100px">
                 <br>
-                <li>Temp: ${weatherData.daily[i].temp.day}℉</li>
+                <li>Temp: ${Math.round(weatherData.daily[i].temp.day)}℉</li>
                 <br>
                 <li>${Math.round(weatherData.daily[i].temp.min)}℉  -  ${Math.round(weatherData.daily[i].temp.max)}℉</li>
                 <br>
@@ -153,7 +154,7 @@ function renderForecast( data ) {
 
     
     var htmlContainer = `
-        <h1 class="black has-text-centered py-">5-Day Forecast:</h1>
+        <h1 class="black has-text-centered large-text py-">5-Day Forecast:</h1>
         <div id="forecast" class="columns is-desktop m-2">
             ${htmlTemplate}
         </div>   
