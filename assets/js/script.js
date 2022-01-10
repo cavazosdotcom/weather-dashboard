@@ -10,6 +10,10 @@ var favCityList = []
 
 var apiKey = 'a646f924a03b0b80578a8704a8cb2ed5'
 
+init();
+
+
+
 
 searchFormEl.on('submit', function(event){
     event.preventDefault();
@@ -21,7 +25,14 @@ searchFormEl.on('submit', function(event){
     searchInputEl.val('');
 });
 
-renderSavedCities();
+savedButtonsEl.on('click', function(event){
+    var searchSavedCity = event.target.innerText;
+    console.log(searchSavedCity)
+    getGeo(searchSavedCity);
+});
+
+
+
 
 function getGeo( searchVal ) {
 
@@ -98,9 +109,11 @@ function renderCurrent( data, cityName ) {
     var weatherData = data
     var currentIcon = weatherData.current.weather[0].icon
     var htmlTemplateCurrent = ''
-
+    var uvNumber = weatherData.current.uvi
     // console.log(moment(weatherData.current.dt, "X").format("M/D/YYYY"))
 
+    uvIndexScale(uvNumber);
+    
     htmlTemplateCurrent = `
     <div class="box has-text-centered">
         <h1 class="small-margin-bottom large-text">${cityName}</h1> 
@@ -118,11 +131,11 @@ function renderCurrent( data, cityName ) {
             <br>
             <li>Humidity: ${weatherData.current.humidity}%</li>
             <br>
-            <li>UV index: <span>${weatherData.current.uvi}</span></li>
+            <li>UV index: <span style="color:${color}">${uvNumber}</span></li>
         </ul>
     </div>
     `;
-
+    
     forecastEl.append(htmlTemplateCurrent);
 };
 
@@ -130,11 +143,12 @@ function renderCurrent( data, cityName ) {
 function renderForecast( data ) {
     
     var weatherData = data
-    // console.log(weatherIcon)
-    // iconUrl = `http://openweathermap.org/img/wn/${dailyIcon}@2x.png`
+    
     var htmlTemplateDaily = ''
     for (var i=1; i < 6; i++){
         var dailyIcon = weatherData.daily[i].weather[0].icon
+        var uvNumber2 = weatherData.daily[i].uvi
+        uvIndexScale(uvNumber2);
         htmlTemplateDaily += `
         <div class="box m-2 column has-text-centered">
             <h1 class="margin-bottom">${moment(weatherData.daily[i].dt, "X").format("dddd")}</h1>
@@ -150,7 +164,7 @@ function renderForecast( data ) {
                 <br>
                 <li>Humidity: ${weatherData.daily[i].humidity}%</li>
                 <br>
-                <li>UV index: <span>${weatherData.daily[i].uvi}</span></li>
+                <li>UV index: <span style="color:${color}">${uvNumber2}</span></li>
             </ul>
         </div>
         `;
@@ -176,15 +190,14 @@ function renderSavedCities (){
     for ( var i=0; i<favCityList.length; i++){
         console.log(i)
         htmlTemplateSaved += `
-        <button class="button is-primary is-light is-fullwidth my-2">${favCityList[i]}</button>
+        <button id="${favCityList[i]}" class="button is-primary is-light is-fullwidth my-2 data-city="${favCityList[i]}">${favCityList[i]}</button>
         `;
     };
 
     savedButtonsEl.append(htmlTemplateSaved);
 };
 
-// TODO: Saved cities list creates buttons
-// TODO: Clicking saved button searches for that city
+// TODO: Change saved to search history, have one saved city that loads on refresh
 // TODO: UV colors
 // TODO: Modal for when search isn't fulfilled
 
@@ -228,3 +241,24 @@ $('.clear-btn').on('click', function(){
     savedButtonsEl.html('');
     console.log(favCityList)
 });
+
+
+function uvIndexScale(number){
+    if(number <= 2){
+        color = `#01F341`;
+    } else if(number <= 5){
+        color = `#F6FF34`;
+    } else if(number <= 7){
+        color = `#F8AA00`;
+    } else if(number <= 10){
+        color = `#FF3748`;
+    } else if(number > 10){
+        color = `#D07BFF`;
+    }
+    return color;
+};
+
+
+function init(){
+    renderSavedCities()
+}
