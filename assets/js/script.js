@@ -1,6 +1,7 @@
 var searchInputEl = $( '#search-value' );
 var searchFormEl = $('#search-input');
-var forecastEl = $('#forecast')
+var forecastEl = $('#forecast');
+var savedButtonsEl = $('#saved');
 
 var city = ''
 var dataName = ''
@@ -20,7 +21,7 @@ searchFormEl.on('submit', function(event){
     searchInputEl.val('');
 });
 
-
+renderSavedCities();
 
 function getGeo( searchVal ) {
 
@@ -131,10 +132,10 @@ function renderForecast( data ) {
     var weatherData = data
     // console.log(weatherIcon)
     // iconUrl = `http://openweathermap.org/img/wn/${dailyIcon}@2x.png`
-    var htmlTemplate = ''
+    var htmlTemplateDaily = ''
     for (var i=1; i < 6; i++){
         var dailyIcon = weatherData.daily[i].weather[0].icon
-        htmlTemplate += `
+        htmlTemplateDaily += `
         <div class="box m-2 column has-text-centered">
             <h1 class="margin-bottom">${moment(weatherData.daily[i].dt, "X").format("dddd")}</h1>
             <ul>
@@ -159,7 +160,7 @@ function renderForecast( data ) {
     var htmlContainer = `
         <h1 class="black has-text-centered large-text py-">5-Day Forecast:</h1>
         <div id="forecast" class="columns is-desktop m-2">
-            ${htmlTemplate}
+            ${htmlTemplateDaily}
         </div>   
         `;
     
@@ -167,11 +168,26 @@ function renderForecast( data ) {
 };
 
 
+function renderSavedCities (){
+    favCityList = JSON.parse(localStorage.getItem('favoriteCities')) || []
+    // console.log(favCityList);
+    var htmlTemplateSaved = '';
+    savedButtonsEl.html('');
+    for ( var i=0; i<favCityList.length; i++){
+        console.log(i)
+        htmlTemplateSaved += `
+        <button class="button is-primary is-light is-fullwidth my-2">${favCityList[i]}</button>
+        `;
+    };
+
+    savedButtonsEl.append(htmlTemplateSaved);
+};
+
 // TODO: Saved cities list creates buttons
+// TODO: Clicking saved button searches for that city
 // TODO: UV colors
 // TODO: Modal for when search isn't fulfilled
 
-favCityList = JSON.parse(localStorage.getItem('favoriteCities')) || []
 
 $('.save-btn').on('click', function(){
     
@@ -203,10 +219,12 @@ $('.save-btn').on('click', function(){
     localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
     // Render favorite character list with the new favorite character list.
     console.log( favCityList );
+    renderSavedCities();
 });
 
 
 $('.clear-btn').on('click', function(){
     favCityList = [];
+    savedButtonsEl.html('');
     console.log(favCityList)
 });
