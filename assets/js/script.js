@@ -17,7 +17,6 @@ init();
 
 searchFormEl.on('submit', function(event){
     event.preventDefault();
-    console.log(searchInputEl.val());
     city = searchInputEl.val();
 
     getGeo(city);
@@ -47,14 +46,14 @@ function getGeo( searchVal ) {
         
         .then( function( data ) {
             // console.log(data);
-            console.log(data[0].lat);
+            // console.log(data[0].lat);
             var latitude = data[0].lat;
-            console.log(data[0].lon);
+            // console.log(data[0].lon);
             var longitude = data[0].lon;
-            console.log(data[0].name)
+            // console.log(data[0].name)
             cityName = `${data[0].name}, ${data[0].state}`
             dataName = data[0].name
-            console.log(data[0].state)
+            // console.log(data[0].state)
             // var state = data[0].state
             
             getWeather( latitude, longitude );
@@ -65,7 +64,9 @@ function getGeo( searchVal ) {
         }
         })
         .catch( function( Error ) {
-            renderModal( Error, "is-warning" );
+            // renderErrorModal( Error, "is-warning" )
+            console.log(Error)
+            
         });
 };
 
@@ -83,13 +84,13 @@ function getWeather( latitude, longitude ) {
             return response.json()
         
         .then( function( data ) {
-            console.log(data);
+            // console.log(data);
             // console.log(data.current.temp)
             // console.log(data.current.wind_speed)
             // console.log(data.current.humidity)
             // console.log(data.current.uvi)
             forecastEl.html('');
-            console.log(cityName)
+            // console.log(cityName)
             renderCurrent(data, cityName);
             renderForecast(data);
             
@@ -99,8 +100,9 @@ function getWeather( latitude, longitude ) {
         }
         })
         .catch( function( Error ) {
-            // renderModal( Error, "is-warning" );
-            console.log('catch error')
+            console.log(Error)
+            
+            // renderErrorModal( Error, "is-warning" )
         });
 };
 
@@ -188,7 +190,6 @@ function renderSavedCities (){
     var htmlTemplateSaved = '';
     savedButtonsEl.html('');
     for ( var i=0; i<favCityList.length; i++){
-        console.log(i)
         htmlTemplateSaved += `
         <button id="${favCityList[i]}" class="button is-primary is-light is-fullwidth my-2 data-city="${favCityList[i]}">${favCityList[i]}</button>
         `;
@@ -198,7 +199,7 @@ function renderSavedCities (){
 };
 
 // TODO: Change saved to search history, have one saved city that loads on refresh
-// TODO: UV colors
+
 // TODO: Modal for when search isn't fulfilled
 
 
@@ -207,7 +208,7 @@ $('.save-btn').on('click', function(){
     var favCityName = dataName
 
     if (favCityName === '') {
-        return console.log(`Please search so we can validate your city`)
+        return console.log(`Please search a city before you save`)
     }
 
     console.log(favCityName)
@@ -237,6 +238,7 @@ $('.save-btn').on('click', function(){
 
 
 $('.clear-btn').on('click', function(){
+    localStorage.clear();
     favCityList = [];
     savedButtonsEl.html('');
     console.log(favCityList)
@@ -257,6 +259,36 @@ function uvIndexScale(number){
     }
     return color;
 };
+
+// function renderErrorModal( errorResponse , severity ) {
+    
+    
+//     var modalType = "";
+//     if( severity === "is-warning" ){
+//         modalType = "Warning";
+//     } else {
+//         modalType = "We need more information.";
+//     };
+
+//     $( '#error-modal-content' ).html(`
+//         <article class="message ${severity}">
+//             <div class="message-header">
+//                 <p>${modalType}</p>
+//                 <button class="delete" aria-label="delete"></button>
+//             </div>
+//             <div class="message-body">
+//                 ${errorResponse}
+//             </div>
+//         </article>
+//     `);
+
+    
+//     modalToggle( "error" );
+// };
+
+// function modalToggle( modalId ){
+//     $( `#${modalId}-modal` ).toggleClass( 'is-active' );
+// };
 
 
 function init(){
