@@ -91,17 +91,28 @@ function getWeather( latitude, longitude ) {
 function renderCurrent( data, cityName ) {
 
     var weatherData = data
-
+    var currentIcon = weatherData.current.weather[0].icon
     var htmlTemplateCurrent = ''
+
+    
+
     htmlTemplateCurrent = `
-    <div class="box">
-        <h1>${cityName} (1/01/2021)</h1>
+    <div class="box has-text-centered">
+        <h1 class="small-margin-bottom">${cityName}</h1> 
+        <h1 class="margin-bottom">(1/01/2021)</h1>
         <ul>
-          <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
-          <li>Temp: ${weatherData.current.temp}</li>
-          <li>Wind: ${weatherData.current.wind_speed} MPH</li>
-          <li>Humidity: ${weatherData.current.humidity}%</li>
-          <li>UV index: <span>${weatherData.current.uvi}</span></li>
+            <li>${weatherData.current.weather[0].main}</li>
+            <img src="http://openweathermap.org/img/wn/${currentIcon}@2x.png" alt="broken clouds" style="width:100px">
+            <br>
+            <li>Temp: ${weatherData.current.temp}℉</li>
+            <br>
+            <li>${Math.round(weatherData.daily[0].temp.min)}℉  -  ${Math.round(weatherData.daily[0].temp.max)}℉</li>
+            <br>
+            <li>Wind: ${weatherData.current.wind_speed} MPH</li>
+            <br>
+            <li>Humidity: ${weatherData.current.humidity}%</li>
+            <br>
+            <li>UV index: <span>${weatherData.current.uvi}</span></li>
         </ul>
     </div>
     `;
@@ -113,19 +124,27 @@ function renderCurrent( data, cityName ) {
 function renderForecast( data ) {
     
     var weatherData = data
+    // console.log(weatherIcon)
+    // iconUrl = `http://openweathermap.org/img/wn/${dailyIcon}@2x.png`
     var htmlTemplate = ''
-    for (var i=0; i < 5; i++){
-        console.log(i)
+    for (var i=1; i < 6; i++){
+        var dailyIcon = weatherData.daily[i].weather[0].icon
         htmlTemplate += `
         <div class="box m-2 column has-text-centered">
-            <h1>(1/0${i}/2021)</h1>
+            <h1 class="margin-bottom">(1/0${i}/2021)</h1>
             <ul>
-                <img src="http://openweathermap.org/img/wn/04n@2x.png" alt="broken clouds" style="width:100px">
-                <li>Low Temp: ${Math.round(weatherData.daily[i].temp.min)}℉</li>
-                <li>High Temp: ${Math.round(weatherData.daily[i].temp.max)}℉</li>
-                <li>Wind: 9.0 MPH</li>
-                <li>Humidity: 50%</li>
-                <li>UV index: <span>1.09</span></li>
+                <li>${weatherData.daily[i].weather[0].main}</li>
+                <img src="http://openweathermap.org/img/wn/${dailyIcon}@2x.png" alt="broken clouds" style="width:100px">
+                <br>
+                <li>Temp: ${weatherData.daily[i].temp.day}℉</li>
+                <br>
+                <li>${Math.round(weatherData.daily[i].temp.min)}℉  -  ${Math.round(weatherData.daily[i].temp.max)}℉</li>
+                <br>
+                <li>Wind: ${weatherData.daily[i].wind_speed} MPH</li>
+                <br>
+                <li>Humidity: ${weatherData.daily[i].humidity}%</li>
+                <br>
+                <li>UV index: <span>${weatherData.daily[i].uvi}</span></li>
             </ul>
         </div>
         `;
@@ -134,7 +153,7 @@ function renderForecast( data ) {
 
     
     var htmlContainer = `
-        <h1 class="black py-">5-Day Forecast:</h1>
+        <h1 class="black has-text-centered py-">5-Day Forecast:</h1>
         <div id="forecast" class="columns is-desktop m-2">
             ${htmlTemplate}
         </div>   
@@ -142,15 +161,6 @@ function renderForecast( data ) {
     
     forecastEl.append(htmlContainer);
 };
-
-
-
-
-
-
-
-
-
 
 
 
