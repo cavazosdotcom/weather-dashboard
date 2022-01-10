@@ -1,8 +1,12 @@
 var searchInputEl = $( '#search-value' );
 var searchFormEl = $('#search-input');
-var city = ''
 var forecastEl = $('#forecast')
+
+var city = ''
+var dataName = ''
 var cityName = ''
+var favCityList = []
+
 var apiKey = 'a646f924a03b0b80578a8704a8cb2ed5'
 
 
@@ -37,7 +41,7 @@ function getGeo( searchVal ) {
             var longitude = data[0].lon;
             console.log(data[0].name)
             cityName = `${data[0].name}, ${data[0].state}`
-            // var name = data[0].name
+            dataName = data[0].name
             console.log(data[0].state)
             // var state = data[0].state
             
@@ -151,7 +155,6 @@ function renderForecast( data ) {
         `;
     };
     
-
     
     var htmlContainer = `
         <h1 class="black has-text-centered large-text py-">5-Day Forecast:</h1>
@@ -164,5 +167,45 @@ function renderForecast( data ) {
 };
 
 
+// TODO: Saved cities list
+// TODO: UV colors
+// TODO: Modal for when search isn't fulfilled
 
-// searchFormEl.on( 'submit' , formSubmit );
+favCityList = JSON.parse(localStorage.getItem('favoriteCities')) || []
+
+$('.save-btn').on('click', function(){
+    
+    var favCityName = dataName
+
+    if (favCityName === '') {
+        return console.log(`Please search so we can validate your city`)
+    }
+
+    console.log(favCityName)
+    /*
+    // For loop to check if character is already on favorites list.
+    // If they are remove them from the array, save local storage with new favorite character list.
+    // Then re-render the favorite character list. 
+    */
+    for ( var i=0; i < favCityList.length; i++ ) {
+        if ( favCityList[i] === favCityName ) {
+            // favCityList.splice( i , 1 );
+            localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
+            // favoriteInputEl.val("");
+            return console.log( favCityList );
+        };
+    };
+
+    // If character name is not already saved to favorite character list, add it to array.
+    favCityList = favCityList.concat( favCityName );
+
+    // Saving the updated favorite character array to local storage.
+    localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
+    // Render favorite character list with the new favorite character list.
+    console.log( favCityList );
+});
+
+$('.clear-btn').on('click', function(){
+    favCityList = [];
+    console.log(favCityList)
+});
