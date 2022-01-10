@@ -167,7 +167,7 @@ function renderForecast( data ) {
 };
 
 
-// TODO: Saved cities list
+// TODO: Saved cities list creates buttons
 // TODO: UV colors
 // TODO: Modal for when search isn't fulfilled
 
@@ -204,6 +204,7 @@ $('.save-btn').on('click', function(){
     // Render favorite character list with the new favorite character list.
     console.log( favCityList );
 });
+
 
 $('.clear-btn').on('click', function(){
     favCityList = [];
