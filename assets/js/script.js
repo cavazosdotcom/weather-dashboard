@@ -6,13 +6,25 @@ var savedButtonsEl = $('#saved');
 var city = ''
 var dataName = ''
 var cityName = ''
-var favCityList = []
+var historyCityList = []
+var favCity;
 
 var apiKey = 'a646f924a03b0b80578a8704a8cb2ed5'
+
 
 init();
 
 
+function init(){
+    
+    favCity = JSON.parse(localStorage.getItem('favoriteCity')) || [];
+    
+    if(favCity.favoriteCity !== undefined){
+        getGeo(favCity.favoriteCity);
+    }; 
+
+    renderSavedCities();
+};
 
 
 searchFormEl.on('submit', function(event){
@@ -26,7 +38,6 @@ searchFormEl.on('submit', function(event){
 
 savedButtonsEl.on('click', function(event){
     var searchSavedCity = event.target.innerText;
-    console.log(searchSavedCity)
     getGeo(searchSavedCity);
 });
 
@@ -93,6 +104,8 @@ function getWeather( latitude, longitude ) {
             // console.log(cityName)
             renderCurrent(data, cityName);
             renderForecast(data);
+            searchHistory(dataName);
+            renderSavedCities();
             
         });
         } else {
@@ -184,14 +197,16 @@ function renderForecast( data ) {
 };
 
 
+
+
 function renderSavedCities (){
-    favCityList = JSON.parse(localStorage.getItem('favoriteCities')) || []
+    historyCityList = JSON.parse(localStorage.getItem('searchHistoryCities')) || []
     // console.log(favCityList);
     var htmlTemplateSaved = '';
     savedButtonsEl.html('');
-    for ( var i=0; i<favCityList.length; i++){
+    for ( var i=0; i<historyCityList.length; i++){
         htmlTemplateSaved += `
-        <button id="${favCityList[i]}" class="button is-primary is-light is-fullwidth my-2 data-city="${favCityList[i]}">${favCityList[i]}</button>
+        <button id="${historyCityList[i]}" class="button is-primary is-light is-fullwidth my-2 data-city="${historyCityList[i]}">${historyCityList[i]}</button>
         `;
     };
 
@@ -203,45 +218,90 @@ function renderSavedCities (){
 // TODO: Modal for when search isn't fulfilled
 
 
+// $('.save-btn').on('click', function(){
+    
+//     var favCityName = dataName
+
+//     if (favCityName === '') {
+//         return console.log(`Please search a city before you save`)
+//     }
+
+//     console.log(favCityName)
+    
+//     For loop to check if character is already on favorites list.
+//     If they are remove them from the array, save local storage with new favorite character list.
+//     Then re-render the favorite character list. 
+    
+//     for ( var i=0; i < favCityList.length; i++ ) {
+//         if ( favCityList[i] === favCityName ) {
+//             favCityList.splice( i , 1 );
+//             localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
+//             favoriteInputEl.val("");
+//             return console.log( favCityList );
+//         };
+//     };
+
+//     If character name is not already saved to favorite character list, add it to array.
+//     favCityList = favCityList.concat( favCityName );
+
+//     Saving the updated favorite character array to local storage.
+//     localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
+//     Render favorite character list with the new favorite character list.
+//     console.log( favCityList );
+//     renderSavedCities();
+// });
+
+function searchHistory(city){
+    
+    var historyCityName = city
+
+    // if (favCityName === '') {
+    //     return console.log(`Please search a city before you save`)
+    // }
+
+    for ( var i=0; i < historyCityList.length; i++ ) {
+        if ( historyCityList[i] === historyCityName ) {
+            // favCityList.splice( i , 1 );
+            localStorage.setItem( "searchHistoryCities" , JSON.stringify( historyCityList ));
+            // favoriteInputEl.val("");
+            // return console.log( historyCityList );
+            return;
+        };
+    };
+    
+    historyCityList = historyCityList.concat( historyCityName );
+
+    // Saving the updated favorite character array to local storage.
+    localStorage.setItem( "searchHistoryCities" , JSON.stringify( historyCityList ));
+    // Render favorite character list with the new favorite character list.
+    console.log( historyCityList );
+    
+    // renderSavedCities();
+}
+
 $('.save-btn').on('click', function(){
     
     var favCityName = dataName
 
+    console.log(`${favCityName} has been saved as your favorite city`);
+
     if (favCityName === '') {
         return console.log(`Please search a city before you save`)
-    }
-
-    console.log(favCityName)
-    /*
-    // For loop to check if character is already on favorites list.
-    // If they are remove them from the array, save local storage with new favorite character list.
-    // Then re-render the favorite character list. 
-    */
-    for ( var i=0; i < favCityList.length; i++ ) {
-        if ( favCityList[i] === favCityName ) {
-            // favCityList.splice( i , 1 );
-            localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
-            // favoriteInputEl.val("");
-            return console.log( favCityList );
-        };
     };
 
-    // If character name is not already saved to favorite character list, add it to array.
-    favCityList = favCityList.concat( favCityName );
+    favCity = {
+        favoriteCity: favCityName,
+    };
 
-    // Saving the updated favorite character array to local storage.
-    localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
-    // Render favorite character list with the new favorite character list.
-    console.log( favCityList );
-    renderSavedCities();
-});
+    localStorage.setItem('favoriteCity', JSON.stringify(favCity));
 
+})
 
 $('.clear-btn').on('click', function(){
     localStorage.clear();
-    favCityList = [];
+    historyCityList = [];
     savedButtonsEl.html('');
-    console.log(favCityList)
+    console.log(historyCityList)
 });
 
 
@@ -259,7 +319,3 @@ function uvIndexScale(number){
     }
     return color;
 };
-
-function init(){
-    renderSavedCities()
-}
