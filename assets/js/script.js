@@ -260,37 +260,6 @@ function uvIndexScale(number){
     return color;
 };
 
-// function renderErrorModal( errorResponse , severity ) {
-    
-    
-//     var modalType = "";
-//     if( severity === "is-warning" ){
-//         modalType = "Warning";
-//     } else {
-//         modalType = "We need more information.";
-//     };
-
-//     $( '#error-modal-content' ).html(`
-//         <article class="message ${severity}">
-//             <div class="message-header">
-//                 <p>${modalType}</p>
-//                 <button class="delete" aria-label="delete"></button>
-//             </div>
-//             <div class="message-body">
-//                 ${errorResponse}
-//             </div>
-//         </article>
-//     `);
-
-    
-//     modalToggle( "error" );
-// };
-
-// function modalToggle( modalId ){
-//     $( `#${modalId}-modal` ).toggleClass( 'is-active' );
-// };
-
-
 function init(){
     renderSavedCities()
 }
