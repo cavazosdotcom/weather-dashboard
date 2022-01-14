@@ -18,9 +18,9 @@ The user can search for a city and the page should render the current weather an
 
 # Links
 
-[planner Github URL](https://cavazosdotcom.github.io/weather-dashboard/)
+[Weather App Github URL](https://cavazosdotcom.github.io/weather-dashboard/)
 
-[planner Github Repo URL](https://github.com/cavazosdotcom/weather-dashboard)
+[Weather App Github Repo URL](https://github.com/cavazosdotcom/weather-dashboard)
 
 # Picture
 
