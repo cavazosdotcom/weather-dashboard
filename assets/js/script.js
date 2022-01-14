@@ -1,20 +1,24 @@
+// HTML Selector Variables
 var searchInputEl = $( '#search-value' );
 var searchFormEl = $('#search-input');
 var forecastEl = $('#forecast');
 var savedButtonsEl = $('#saved');
 
+// Variables created to bring values into the global scope
 var city = ''
 var dataName = ''
 var cityName = ''
 var historyCityList = []
 var favCity;
 
+// apiKey to fetch data from our API's
 var apiKey = 'a646f924a03b0b80578a8704a8cb2ed5'
 
 
-init();
 
-
+// init function that calls on page load
+// Gets favoriteCity from local storage then checks if the object is empty, if not then favorite city is called into our API fetch request function, getGeo();
+// Search history buttons are rendered
 function init(){
     
     favCity = JSON.parse(localStorage.getItem('favoriteCity')) || [];
@@ -22,20 +26,27 @@ function init(){
     if(favCity.favoriteCity !== undefined){
         getGeo(favCity.favoriteCity);
     }; 
-
+    
     renderSavedCities();
 };
+// Calls the init function
+init();
 
 
+// Form submit event listener for city searchbar
+// On form submit calls getGeo() api fetch request with the submitted city 
 searchFormEl.on('submit', function(event){
     event.preventDefault();
     city = searchInputEl.val();
 
     getGeo(city);
 
+    // resets the search input value for fresh form submit next time
     searchInputEl.val('');
 });
 
+
+// Click event listener to search for the city that is clicked from the search history buttons
 savedButtonsEl.on('click', function(event){
     var searchSavedCity = event.target.innerText;
     getGeo(searchSavedCity);
@@ -43,7 +54,7 @@ savedButtonsEl.on('click', function(event){
 
 
 
-
+// Custom API fetch request function for the searched city's location via latitude and longitude
 function getGeo( searchVal ) {
 
     // API Request URL.
@@ -56,26 +67,26 @@ function getGeo( searchVal ) {
             return response.json()
         
         .then( function( data ) {
-            // console.log(data);
-            // console.log(data[0].lat);
+
+            // latitude and longitude values set from our fetch data
             var latitude = data[0].lat;
-            // console.log(data[0].lon);
             var longitude = data[0].lon;
-            // console.log(data[0].name)
-            cityName = `${data[0].name}, ${data[0].state}`
-            dataName = data[0].name
-            // console.log(data[0].state)
-            // var state = data[0].state
             
+            // 'city' and 'city, state' set as variables
+            dataName = data[0].name
+            cityName = `${data[0].name}, ${data[0].state}`
+            
+            // calls second api request
             getWeather( latitude, longitude );
 
         });
         } else {
+            // throws error if city name isn't valid
             throw Error( response.statusText + ". We were not able to locate the city you searched for." );
         }
         })
         .catch( function( Error ) {
-            // renderErrorModal( Error, "is-warning" )
+            // catch error
             console.log(Error)
             
         });
@@ -83,6 +94,7 @@ function getGeo( searchVal ) {
 
 
 
+// Custom API fetch request to get weather data of searched city
 function getWeather( latitude, longitude ) {
 
     // API Request URL.
@@ -95,16 +107,18 @@ function getWeather( latitude, longitude ) {
             return response.json()
         
         .then( function( data ) {
-            // console.log(data);
-            // console.log(data.current.temp)
-            // console.log(data.current.wind_speed)
-            // console.log(data.current.humidity)
-            // console.log(data.current.uvi)
+            
+            // clears the current shown weather boxes
             forecastEl.html('');
-            // console.log(cityName)
+            
+            // renders weather boxes for current day and forecasted weather for next 5 days
             renderCurrent(data, cityName);
             renderForecast(data);
+            
+            // function that creates/saves search history array with newest city searched
             searchHistory(dataName);
+            
+            // function that renders each city in search history as button that can be searched again
             renderSavedCities();
             
         });
@@ -115,20 +129,27 @@ function getWeather( latitude, longitude ) {
         .catch( function( Error ) {
             console.log(Error)
             
-            // renderErrorModal( Error, "is-warning" )
         });
 };
 
+
+
+// Custom function to render the current days weather forecast based on the city name and the data received about that city
 function renderCurrent( data, cityName ) {
 
+    // variable for the weather data
     var weatherData = data
+    // variable for the weather icon for picture of weather
     var currentIcon = weatherData.current.weather[0].icon
+    // creates variable for our template literal to create our current weather box
     var htmlTemplateCurrent = ''
+    // variable for the current weather's UV index number
     var uvNumber = weatherData.current.uvi
-    // console.log(moment(weatherData.current.dt, "X").format("M/D/YYYY"))
-
+    
+    // calls custom function to set the UV index to specific color based on the value of the UV index number
     uvIndexScale(uvNumber);
     
+    // template literal for weather box
     htmlTemplateCurrent = `
     <div class="box has-text-centered">
         <h1 class="small-margin-bottom large-text">${cityName}</h1> 
@@ -151,15 +172,20 @@ function renderCurrent( data, cityName ) {
     </div>
     `;
     
+    // appends box to forecast element on html
     forecastEl.append(htmlTemplateCurrent);
 };
 
 
+
+// Custom function to render the weather forecast boxes for the next 5 days
 function renderForecast( data ) {
     
     var weatherData = data
     
     var htmlTemplateDaily = ''
+
+    // for loop to render each weather forecast box
     for (var i=1; i < 6; i++){
         var dailyIcon = weatherData.daily[i].weather[0].icon
         var uvNumber2 = weatherData.daily[i].uvi
@@ -185,7 +211,7 @@ function renderForecast( data ) {
         `;
     };
     
-    
+    // main html template to maintain flex properties
     var htmlContainer = `
         <h1 class="black has-text-centered large-text py-">5-Day Forecast:</h1>
         <div id="forecast" class="columns is-desktop m-2">
@@ -198,12 +224,16 @@ function renderForecast( data ) {
 
 
 
-
+// Renders the search history array of cities as buttons
 function renderSavedCities (){
-    historyCityList = JSON.parse(localStorage.getItem('searchHistoryCities')) || []
-    // console.log(favCityList);
+
+    // gets history array from local storage
+    historyCityList = JSON.parse(localStorage.getItem('searchHistoryCities')) || [];
+
     var htmlTemplateSaved = '';
     savedButtonsEl.html('');
+
+    // for loop to render each button wiht template literal
     for ( var i=0; i<historyCityList.length; i++){
         htmlTemplateSaved += `
         <button id="${historyCityList[i]}" class="button is-primary is-light is-fullwidth my-2 data-city="${historyCityList[i]}">${historyCityList[i]}</button>
@@ -213,98 +243,68 @@ function renderSavedCities (){
     savedButtonsEl.append(htmlTemplateSaved);
 };
 
-// TODO: Change saved to search history, have one saved city that loads on refresh
-
-// TODO: Modal for when search isn't fulfilled
 
 
-// $('.save-btn').on('click', function(){
-    
-//     var favCityName = dataName
-
-//     if (favCityName === '') {
-//         return console.log(`Please search a city before you save`)
-//     }
-
-//     console.log(favCityName)
-    
-//     For loop to check if character is already on favorites list.
-//     If they are remove them from the array, save local storage with new favorite character list.
-//     Then re-render the favorite character list. 
-    
-//     for ( var i=0; i < favCityList.length; i++ ) {
-//         if ( favCityList[i] === favCityName ) {
-//             favCityList.splice( i , 1 );
-//             localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
-//             favoriteInputEl.val("");
-//             return console.log( favCityList );
-//         };
-//     };
-
-//     If character name is not already saved to favorite character list, add it to array.
-//     favCityList = favCityList.concat( favCityName );
-
-//     Saving the updated favorite character array to local storage.
-//     localStorage.setItem( "favoriteCities" , JSON.stringify( favCityList ));
-//     Render favorite character list with the new favorite character list.
-//     console.log( favCityList );
-//     renderSavedCities();
-// });
-
+// Creates search history array, and sets to local storage 
 function searchHistory(city){
     
     var historyCityName = city
 
-    // if (favCityName === '') {
-    //     return console.log(`Please search a city before you save`)
-    // }
-
+    // for loop checks if city is already in search history array so same city isn't added more than once
     for ( var i=0; i < historyCityList.length; i++ ) {
         if ( historyCityList[i] === historyCityName ) {
-            // favCityList.splice( i , 1 );
             localStorage.setItem( "searchHistoryCities" , JSON.stringify( historyCityList ));
-            // favoriteInputEl.val("");
-            // return console.log( historyCityList );
             return;
         };
     };
     
+    // adds new city name to history array
     historyCityList = historyCityList.concat( historyCityName );
 
     // Saving the updated favorite character array to local storage.
     localStorage.setItem( "searchHistoryCities" , JSON.stringify( historyCityList ));
-    // Render favorite character list with the new favorite character list.
-    console.log( historyCityList );
-    
-    // renderSavedCities();
-}
 
+};
+
+
+
+// Event listener for save button to save a favorite city in local storage
 $('.save-btn').on('click', function(){
     
     var favCityName = dataName
 
-    console.log(`${favCityName} has been saved as your favorite city`);
-
+    // logic to log when a city is saved as a favorite, if there was no form submit, don't save
     if (favCityName === '') {
         return console.log(`Please search a city before you save`)
+    } else {
+        console.log(`${favCityName} has been saved as your favorite city`);
     };
-
+    
+    // creates fav city object
     favCity = {
         favoriteCity: favCityName,
     };
 
+    // sets fav city object to local storage
     localStorage.setItem('favoriteCity', JSON.stringify(favCity));
 
-})
-
-$('.clear-btn').on('click', function(){
-    localStorage.clear();
-    historyCityList = [];
-    savedButtonsEl.html('');
-    console.log(historyCityList)
 });
 
 
+
+// Event Listener to for clear button on click
+$('.clear-btn').on('click', function(){
+    // clears local storage
+    localStorage.clear();
+    // clears search history array
+    historyCityList = [];
+    // clears html element
+    savedButtonsEl.html('');
+});
+
+
+
+// function to set the color styling for the UV Index based the number's value
 function uvIndexScale(number){
     if(number <= 2){
         color = `#01F341`;

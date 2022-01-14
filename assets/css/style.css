@@ -1,38 +1,46 @@
+/* h1 elements color and bold */
 h1 {
     color: #fff;
-    /* font-size: 1rem; */
     font-weight: bold;
 }
 
+/* list elements color and bold */
 li {
     color: #fff;
     font-weight: bold;
 }
 
+/* large text class */
 .large-text {
     font-size: 2rem;
 }
 
+/* medium text class */
 .medium-text {
     font-size: 1.5rem;
 }
 
+/* box background color class for weather boxes */
 .box {
     background-color: lightslategray;
 }
 
+/* border bottom class for line seperating form submit, save/clear buttons, and search history buttons */
 .border-bottom {
     border-bottom: solid black;
 }
 
+/* bottom margin class */
 .margin-bottom {
     margin-bottom: 1.5rem;
 }
 
+/* smaller margin bottom class */
 .small-margin-bottom {
     margin-bottom: 0.5rem;
 }
 
+/* text color class for main forecast titles */
 .black {
     color: black;
 }

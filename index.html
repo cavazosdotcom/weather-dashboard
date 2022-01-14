@@ -1,47 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Dashboard</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="./assets/css/reset.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
 
 </head>
-<body>
-    
-    <section class="hero is-small is-primary"> 
-      <div class="hero-body has-text-centered">
-        <p class="title">
-          Weather Dashboard
-        </p>
-      </div>
-    </section>
-  
-  <div class="columns m-2">
-    <div class="column is-one-quarter-desktop is-one-third-tablet is-full-mobile">
-        <form class="border-bottom" id="search-input">
-          <label class="label">Search for a City:</label>
-          <input id="search-value" class="input" type="text" placeholder="Seattle"/>
-          <button class="button is-primary is-fullwidth my-2">Search</button>
-        </form>
-          
-        <div class="border-bottom">
-          <button class="button save-btn is-dark is-fullwidth my-2">Save</button>
-          <button class="button clear-btn is-light is-fullwidth my-2">Clear History</button> 
-        </div>
 
-        <div id="saved"></div>
+
+<body>
+
+  <!-- section to create page hero with bulma styling classes -->
+  <section class="hero is-small is-primary"> 
+    <div class="hero-body has-text-centered">
+      <p class="title">
+        Weather Dashboard
+      </p>
+    </div>
+  </section>
+  
+  <!-- section for big flex container -->
+  <section class="columns m-2">
+
+    <!-- search bar and search history column, bulma size classes -->
+    <div class="column is-one-quarter-desktop is-one-third-tablet is-full-mobile">
+      
+      <!-- form submit container -->
+      <form class="border-bottom" id="search-input">
+        <!-- label -->
+        <label class="label">Search for a City:</label>
+        <!-- search form input -->
+        <input id="search-value" class="input" type="text" placeholder="Seattle"/>
+        <!-- search button -->
+        <button class="button is-primary is-fullwidth my-2">Search</button>
+      </form>
+      
+      <!-- save favorite city and clear history buttons -->
+      <div class="border-bottom">
+        <button class="button save-btn is-dark is-fullwidth my-2">Save Favorite City</button>
+        <button class="button clear-btn is-light is-fullwidth my-2">Clear History</button> 
+      </div>
+
+      <!-- id selected to render search history buttons from JS -->
+      <div id="saved"></div>
 
     </div>
     
-    <div id='forecast' class="column is-three-quarters-desktop is-two-thirds-tablet is-full-mobile m-2"></div>
+    <!-- id selected to render forcast section from JS, bulma size classes -->
+    <div id='forecast' class="column is-three-quarters-desktop is-two-thirds-tablet is-full-mobile m-2">
+      
+    </div>
 
-  </div>
+  </section>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
